@@ -5,7 +5,6 @@ import { srConfig } from '@config';
 import sr from '@utils/sr';
 import { createMeta } from '@utils/seo';
 import { usePrefersReducedMotion } from '@hooks';
-import { getProjects } from '../../tools/content.server.js';
 
 const StyledWorkList = styled.ul`
   ${({ theme }) => theme.mixins.resetList};
@@ -69,6 +68,7 @@ const StyledWorkItem = styled.li`
 `;
 
 export async function loader() {
+  const { getProjects } = await import('../data/content.server.js');
   return { projects: await getProjects() };
 }
 

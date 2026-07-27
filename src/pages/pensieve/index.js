@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { createMeta } from '@utils/seo';
-import { slugify, getPosts } from '../../../tools/content.server.js';
+import { slugify } from '@utils/content';
 
 const StyledMain = styled.main`
   max-width: 1000px;
@@ -57,6 +57,7 @@ const StyledMain = styled.main`
 `;
 
 export async function loader() {
+  const { getPosts } = await import('../../data/content.server.js');
   return { posts: await getPosts() };
 }
 

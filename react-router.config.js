@@ -1,4 +1,4 @@
-import { getPreRenderedRoutes } from './tools/content.server.js';
+import { getPreRenderedRoutes } from './src/data/content.server.js';
 
 export default {
   appDirectory: 'src',

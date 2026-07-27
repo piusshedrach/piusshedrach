@@ -3,8 +3,8 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { usePrefersReducedMotion } from '@hooks';
 import { navDelay } from '@utils';
+import { normalizePath, slugify } from '@utils/content';
 import { createMeta } from '@utils/seo';
-import { getPosts, normalizePath, slugify } from '../../tools/content.server.js';
 
 const StyledPostContainer = styled.main`
   max-width: 1000px;
@@ -77,6 +77,7 @@ const StyledHomeButton = styled(Link)`
 `;
 
 export async function loader({ request }) {
+  const { getPosts } = await import('../data/content.server.js');
   const pathname = normalizePath(new URL(request.url).pathname);
   const posts = await getPosts();
   const post = posts.find(candidate => candidate.frontmatter.slug === pathname) || null;

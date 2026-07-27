@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { getPreRenderedRoutes } from './content.server.js';
+import { getPreRenderedRoutes } from '../src/data/content.server.js';
 
 const siteUrl = process.env.SITE_URL?.replace(/\/+$/, '');
 

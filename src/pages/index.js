@@ -10,13 +10,13 @@ import {
   Contact,
 } from '@components';
 import { createMeta } from '@utils/seo';
-import { getProjects } from '../../tools/content.server.js';
 
 const StyledMainContainer = styled.main`
   counter-reset: section;
 `;
 
 export async function loader() {
+  const { getProjects } = await import('../data/content.server.js');
   const projects = await getProjects();
   return { projects: projects.filter(project => project.frontmatter.featured === true) };
 }

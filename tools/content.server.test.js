@@ -7,11 +7,10 @@ import { afterEach, describe, expect, it } from 'vitest';
 import {
   getPosts,
   groupPostsByTag,
-  normalizePath,
   parseMarkdownDocument,
   renderMarkdown,
-  slugify,
-} from './content.server.js';
+} from '../src/data/content.server.js';
+import { normalizePath, slugify } from '../src/utils/content.js';
 
 const temporaryDirectories = [];
 

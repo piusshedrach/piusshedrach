@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { createMeta } from '@utils/seo';
-import { getPosts, groupPostsByTag, slugify } from '../../tools/content.server.js';
+import { slugify } from '@utils/content';
 
 const StyledTagsContainer = styled.main`
   max-width: 1000px;
@@ -47,6 +47,7 @@ const StyledTagsContainer = styled.main`
 `;
 
 export async function loader({ params }) {
+  const { getPosts, groupPostsByTag } = await import('../data/content.server.js');
   const posts = await getPosts();
   const tag = groupPostsByTag(posts).get(params.tag);
 

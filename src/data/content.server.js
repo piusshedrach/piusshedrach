@@ -9,8 +9,9 @@ import rehypeStringify from 'rehype-stringify';
 import remarkParse from 'remark-parse';
 import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
+import { normalizePath, slugify } from '../utils/content.js';
 
-const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
+const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const contentDirectory = path.join(rootDirectory, 'content');
 const projectsDirectory = path.join(contentDirectory, 'projects');
 const postsDirectory = path.join(contentDirectory, 'posts');
@@ -140,23 +141,6 @@ function resolveCoverUrl(cover, filePath) {
   const relativeCoverPath = path.relative(contentDirectory, absoluteCoverPath).replaceAll('\\', '/');
 
   return `/content/${relativeCoverPath}`;
-}
-
-export function normalizePath(value = '/') {
-  const [pathname] = String(value).split(/[?#]/);
-  const normalized = `/${pathname}`.replace(/\/+/g, '/');
-
-  return normalized === '/' ? normalized : normalized.replace(/\/+$/, '');
-}
-
-export function slugify(value = '') {
-  return String(value)
-    .normalize('NFKD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '');
 }
 
 export async function getProjects() {

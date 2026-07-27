@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { createMeta } from '@utils/seo';
-import { getPosts, groupPostsByTag } from '../../../tools/content.server.js';
 
 const StyledTagsContainer = styled.main`
   max-width: 1000px;
@@ -31,6 +30,7 @@ const StyledTagsContainer = styled.main`
 `;
 
 export async function loader() {
+  const { getPosts, groupPostsByTag } = await import('../../data/content.server.js');
   const posts = await getPosts();
   const tags = Array.from(groupPostsByTag(posts).values()).sort((a, b) =>
     a.name.localeCompare(b.name),
