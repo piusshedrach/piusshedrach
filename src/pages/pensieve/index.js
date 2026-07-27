@@ -1,10 +1,8 @@
 import React from 'react';
-import { graphql, Link } from 'gatsby';
-import kebabCase from 'lodash/kebabCase';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
+import { Link } from 'react-router';
 import styled from 'styled-components';
-import { Layout } from '@components';
+import { createMeta } from '@utils/seo';
+import { slugify, getPosts } from '../../../tools/content.server.js';
 
 const StyledMain = styled.main`
   max-width: 1000px;
@@ -58,87 +56,58 @@ const StyledMain = styled.main`
   }
 `;
 
-const InsightsPage = ({ location, data }) => {
-  const posts = data.allMarkdownRemark.edges;
+export async function loader() {
+  return { posts: await getPosts() };
+}
+
+export const meta = createMeta({ title: 'Insights', noindex: true });
+
+const InsightsPage = ({ loaderData }) => {
+  const { posts } = loaderData;
 
   return (
-    <Layout location={location}>
-      <Helmet title="Insights">
-        <meta name="robots" content="noindex, nofollow" />
-      </Helmet>
+    <StyledMain>
+      <header>
+        <h1 className="big-heading">Insights</h1>
+        <p className="subtitle">Notes on websites, trust, performance, and digital strategy.</p>
+      </header>
 
-      <StyledMain>
-        <header>
-          <h1 className="big-heading">Insights</h1>
-          <p className="subtitle">Notes on websites, trust, performance, and digital strategy.</p>
-        </header>
+      {posts.length === 0 ? (
+        <div className="empty-state">
+          <h2>Original articles are being prepared.</h2>
+          <p>This section will return when the first Pius-authored insight is ready.</p>
+          <Link className="inline-link" to="/">
+            Return home
+          </Link>
+        </div>
+      ) : (
+        <ul className="posts">
+          {posts.map(({ frontmatter }) => {
+            const { title, description, slug, date, tags = [] } = frontmatter;
 
-        {posts.length === 0 ? (
-          <div className="empty-state">
-            <h2>Original articles are being prepared.</h2>
-            <p>This section will return when the first Pius-authored insight is ready.</p>
-            <Link className="inline-link" to="/">
-              Return home
-            </Link>
-          </div>
-        ) : (
-          <ul className="posts">
-            {posts.map(({ node }) => {
-              const { title, description, slug, date, tags = [] } = node.frontmatter;
-
-              return (
-                <li key={slug}>
-                  <article className="post">
-                    <p className="post-meta">{new Date(date).toLocaleDateString()}</p>
-                    <h2 className="post-title">
-                      <Link to={slug}>{title}</Link>
-                    </h2>
-                    <p>{description}</p>
-                    <div className="tags">
-                      {tags.map(tag => (
-                        <Link key={tag} to={`/pensieve/tags/${kebabCase(tag)}/`}>
-                          #{tag}
-                        </Link>
-                      ))}
-                    </div>
-                  </article>
-                </li>
-              );
-            })}
-          </ul>
-        )}
-      </StyledMain>
-    </Layout>
+            return (
+              <li key={slug}>
+                <article className="post">
+                  <p className="post-meta">{new Date(date).toLocaleDateString()}</p>
+                  <h2 className="post-title">
+                    <Link to={slug}>{title}</Link>
+                  </h2>
+                  <p>{description}</p>
+                  <div className="tags">
+                    {tags.map(tag => (
+                      <Link key={tag} to={`/pensieve/tags/${slugify(tag)}`}>
+                        #{tag}
+                      </Link>
+                    ))}
+                  </div>
+                </article>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+    </StyledMain>
   );
 };
 
-InsightsPage.propTypes = {
-  location: PropTypes.object.isRequired,
-  data: PropTypes.object.isRequired,
-};
-
 export default InsightsPage;
-
-export const pageQuery = graphql`
-  {
-    allMarkdownRemark(
-      filter: {
-        fileAbsolutePath: { regex: "/content/posts/" }
-        frontmatter: { draft: { ne: true } }
-      }
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
-      edges {
-        node {
-          frontmatter {
-            title
-            description
-            slug
-            date
-            tags
-          }
-        }
-      }
-    }
-  }
-`;

@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from 'react';
-import { graphql, Link, useStaticQuery } from 'gatsby';
-import { GatsbyImage, getImage } from 'gatsby-plugin-image';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import sr from '@utils/sr';
 import { srConfig } from '@config';
@@ -152,42 +152,10 @@ const StyledProject = styled.li`
   }
 `;
 
-const Featured = () => {
-  const data = useStaticQuery(graphql`
-    query {
-      projects: allMarkdownRemark(
-        filter: {
-          fileAbsolutePath: { regex: "/content/projects/" }
-          frontmatter: { featured: { eq: true } }
-        }
-        sort: { fields: [frontmatter___featuredOrder], order: ASC }
-      ) {
-        edges {
-          node {
-            frontmatter {
-              title
-              category
-              services
-              external
-              github
-              cover {
-                childImageSharp {
-                  gatsbyImageData(width: 700, placeholder: BLURRED, formats: [AUTO, WEBP, AVIF])
-                }
-              }
-            }
-            html
-          }
-        }
-      }
-    }
-  `);
-
+const Featured = ({ projects }) => {
   const revealTitle = useRef(null);
   const revealProjects = useRef([]);
   const prefersReducedMotion = usePrefersReducedMotion();
-  const projects = data.projects.edges;
-
   useEffect(() => {
     if (prefersReducedMotion) {
       return;
@@ -195,7 +163,7 @@ const Featured = () => {
 
     sr.reveal(revealTitle.current, srConfig());
     revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
-  }, []);
+  }, [prefersReducedMotion, projects.length]);
 
   return (
     <StyledWorkSection id="work">
@@ -207,15 +175,23 @@ const Featured = () => {
       </p>
 
       <StyledProjectsGrid>
-        {projects.map(({ node }, i) => {
-          const { frontmatter, html } = node;
+        {projects.map(({ frontmatter, html }, i) => {
           const { category, cover, external, github, services = [], title } = frontmatter;
-          const image = cover ? getImage(cover) : null;
 
           return (
             <StyledProject key={title} ref={el => (revealProjects.current[i] = el)}>
               <div className="project-visual">
-                {image && <GatsbyImage image={image} alt="" className="project-image" />}
+                {cover && (
+                  <img
+                    src={cover}
+                    alt=""
+                    className="project-image"
+                    width="700"
+                    height="394"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                )}
                 <div className="project-placeholder">
                   <span>{category}</span>
                   <strong>{title}</strong>
@@ -264,3 +240,12 @@ const Featured = () => {
 };
 
 export default Featured;
+
+Featured.propTypes = {
+  projects: PropTypes.arrayOf(
+    PropTypes.shape({
+      frontmatter: PropTypes.object.isRequired,
+      html: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
+};

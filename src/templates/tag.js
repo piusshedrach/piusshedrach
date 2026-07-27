@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link, graphql } from 'gatsby';
-import kebabCase from 'lodash/kebabCase';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
+import { Link } from 'react-router';
 import styled from 'styled-components';
-import { Layout } from '@components';
+import { createMeta } from '@utils/seo';
+import { getPosts, groupPostsByTag, slugify } from '../../tools/content.server.js';
 
 const StyledTagsContainer = styled.main`
   max-width: 1000px;
@@ -26,13 +24,16 @@ const StyledTagsContainer = styled.main`
   ul {
     li {
       font-size: 24px;
+
       h2 {
-        font-size: inherit;
         margin: 0;
+        font-size: inherit;
+
         a {
           color: var(--light-slate);
         }
       }
+
       .subtitle {
         color: var(--slate);
         font-size: var(--fz-sm);
@@ -45,106 +46,76 @@ const StyledTagsContainer = styled.main`
   }
 `;
 
-const TagTemplate = ({ pageContext, data, location }) => {
-  const { tag } = pageContext;
-  const { edges } = data.allMarkdownRemark;
+export async function loader({ params }) {
+  const posts = await getPosts();
+  const tag = groupPostsByTag(posts).get(params.tag);
+
+  return {
+    tag: tag ? { name: tag.name, slug: tag.slug, posts: tag.posts } : null,
+  };
+}
+
+export function meta(args) {
+  const title = args.data?.tag ? `Tagged: #${args.data.tag.name}` : 'Tag Not Found';
+  return createMeta({ title, noindex: !args.data?.tag })(args);
+}
+
+const TagTemplate = ({ loaderData }) => {
+  if (!loaderData.tag) {
+    return (
+      <StyledTagsContainer>
+        <h1>Tag not found</h1>
+        <Link to="/pensieve/tags">View all tags</Link>
+      </StyledTagsContainer>
+    );
+  }
+
+  const { name, posts } = loaderData.tag;
 
   return (
-    <Layout location={location}>
-      <Helmet title={`Tagged: #${tag}`} />
+    <StyledTagsContainer>
+      <span className="breadcrumb">
+        <span className="arrow">&larr;</span>
+        <Link to="/pensieve">All insights</Link>
+      </span>
 
-      <StyledTagsContainer>
-        <span className="breadcrumb">
-          <span className="arrow">&larr;</span>
-          <Link to="/pensieve">All insights</Link>
+      <h1>
+        <span>#{name}</span>
+        <span>
+          <Link to="/pensieve/tags">View all tags</Link>
         </span>
+      </h1>
 
-        <h1>
-          <span>#{tag}</span>
-          <span>
-            <Link to="/pensieve/tags">View all tags</Link>
-          </span>
-        </h1>
+      <ul className="fancy-list">
+        {posts.map(({ frontmatter }) => {
+          const { title, slug, date, tags = [] } = frontmatter;
 
-        <ul className="fancy-list">
-          {edges.map(({ node }) => {
-            const { title, slug, date, tags } = node.frontmatter;
-            return (
-              <li key={slug}>
-                <h2>
-                  <Link to={slug}>{title}</Link>
-                </h2>
-                <p className="subtitle">
-                  <time>
-                    {new Date(date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
-                  <span>&nbsp;&mdash;&nbsp;</span>
-                  {tags &&
-                    tags.length > 0 &&
-                    tags.map((tag, i) => (
-                      <Link key={i} to={`/pensieve/tags/${kebabCase(tag)}/`} className="tag">
-                        #{tag}
-                      </Link>
-                    ))}
-                </p>
-              </li>
-            );
-          })}
-        </ul>
-      </StyledTagsContainer>
-    </Layout>
+          return (
+            <li key={slug}>
+              <h2>
+                <Link to={slug}>{title}</Link>
+              </h2>
+              <p className="subtitle">
+                <time>
+                  {new Date(date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+                {tags.length > 0 && <span>&nbsp;&mdash;&nbsp;</span>}
+                {tags.map(tag => (
+                  <Link key={tag} to={`/pensieve/tags/${slugify(tag)}`} className="tag">
+                    #{tag}
+                  </Link>
+                ))}
+              </p>
+            </li>
+          );
+        })}
+      </ul>
+    </StyledTagsContainer>
   );
 };
 
 export default TagTemplate;
-
-TagTemplate.propTypes = {
-  pageContext: PropTypes.shape({
-    tag: PropTypes.string.isRequired,
-  }),
-  data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
-      totalCount: PropTypes.number.isRequired,
-      edges: PropTypes.arrayOf(
-        PropTypes.shape({
-          node: PropTypes.shape({
-            frontmatter: PropTypes.shape({
-              title: PropTypes.string.isRequired,
-            }),
-          }),
-        }).isRequired,
-      ),
-    }),
-  }),
-  location: PropTypes.object,
-};
-
-export const pageQuery = graphql`
-  query($tag: String!) {
-    allMarkdownRemark(
-      limit: 2000
-      sort: { fields: [frontmatter___date], order: DESC }
-      filter: {
-        fileAbsolutePath: { regex: "/content/posts/" }
-        frontmatter: { tags: { in: [$tag] }, draft: { ne: true } }
-      }
-    ) {
-      totalCount
-      edges {
-        node {
-          frontmatter {
-            title
-            description
-            date
-            slug
-            tags
-          }
-        }
-      }
-    }
-  }
-`;

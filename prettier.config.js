@@ -1,1 +1,5 @@
-module.exports = require('@upstatement/prettier-config');
+export default {
+  singleQuote: true,
+  trailingComma: 'all',
+  printWidth: 100,
+};

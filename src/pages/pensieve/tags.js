@@ -1,10 +1,8 @@
 import React from 'react';
-import { Link, graphql } from 'gatsby';
-import kebabCase from 'lodash/kebabCase';
-import PropTypes from 'prop-types';
-import { Helmet } from 'react-helmet';
+import { Link } from 'react-router';
 import styled from 'styled-components';
-import { Layout } from '@components';
+import { createMeta } from '@utils/seo';
+import { getPosts, groupPostsByTag } from '../../../tools/content.server.js';
 
 const StyledTagsContainer = styled.main`
   max-width: 1000px;
@@ -12,6 +10,7 @@ const StyledTagsContainer = styled.main`
   h1 {
     margin-bottom: 50px;
   }
+
   ul {
     color: var(--light-slate);
 
@@ -31,71 +30,41 @@ const StyledTagsContainer = styled.main`
   }
 `;
 
-const TagsPage = ({
-  data: {
-    allMarkdownRemark: { group },
-  },
-  location,
-}) => (
-  <Layout location={location}>
-    <Helmet title="Insight Tags">
-      <meta name="robots" content="noindex, nofollow" />
-    </Helmet>
+export async function loader() {
+  const posts = await getPosts();
+  const tags = Array.from(groupPostsByTag(posts).values()).sort((a, b) =>
+    a.name.localeCompare(b.name),
+  );
 
-    <StyledTagsContainer>
-      <span className="breadcrumb">
-        <span className="arrow">&larr;</span>
-        <Link to="/pensieve">All insights</Link>
-      </span>
+  return {
+    tags: tags.map(tag => ({
+      name: tag.name,
+      slug: tag.slug,
+      totalCount: tag.posts.length,
+    })),
+  };
+}
 
-      <h1>Tags</h1>
-      <ul className="fancy-list">
-        {group.map(tag => (
-          <li key={tag.fieldValue}>
-            <Link to={`/pensieve/tags/${kebabCase(tag.fieldValue)}/`} className="inline-link">
-              {tag.fieldValue} <span className="count">({tag.totalCount})</span>
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </StyledTagsContainer>
-  </Layout>
+export const meta = createMeta({ title: 'Insight Tags', noindex: true });
+
+const TagsPage = ({ loaderData }) => (
+  <StyledTagsContainer>
+    <span className="breadcrumb">
+      <span className="arrow">&larr;</span>
+      <Link to="/pensieve">All insights</Link>
+    </span>
+
+    <h1>Tags</h1>
+    <ul className="fancy-list">
+      {loaderData.tags.map(tag => (
+        <li key={tag.slug}>
+          <Link to={`/pensieve/tags/${tag.slug}`} className="inline-link">
+            {tag.name} <span className="count">({tag.totalCount})</span>
+          </Link>
+        </li>
+      ))}
+    </ul>
+  </StyledTagsContainer>
 );
 
-TagsPage.propTypes = {
-  data: PropTypes.shape({
-    allMarkdownRemark: PropTypes.shape({
-      group: PropTypes.arrayOf(
-        PropTypes.shape({
-          fieldValue: PropTypes.string.isRequired,
-          totalCount: PropTypes.number.isRequired,
-        }).isRequired,
-      ),
-    }),
-    site: PropTypes.shape({
-      siteMetadata: PropTypes.shape({
-        title: PropTypes.string.isRequired,
-      }),
-    }),
-  }),
-  location: PropTypes.object,
-};
-
 export default TagsPage;
-
-export const pageQuery = graphql`
-  query {
-    allMarkdownRemark(
-      limit: 2000
-      filter: {
-        fileAbsolutePath: { regex: "/content/posts/" }
-        frontmatter: { draft: { ne: true } }
-      }
-    ) {
-      group(field: frontmatter___tags) {
-        fieldValue
-        totalCount
-      }
-    }
-  }
-`;

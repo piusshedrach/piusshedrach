@@ -1,13 +1,11 @@
 import React, { useEffect, useRef } from 'react';
-import { graphql } from 'gatsby';
-import { Helmet } from 'react-helmet';
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Layout } from '@components';
 import { Icon } from '@components/icons';
 import { srConfig } from '@config';
 import sr from '@utils/sr';
+import { createMeta } from '@utils/seo';
 import { usePrefersReducedMotion } from '@hooks';
+import { getProjects } from '../../tools/content.server.js';
 
 const StyledWorkList = styled.ul`
   ${({ theme }) => theme.mixins.resetList};
@@ -70,8 +68,13 @@ const StyledWorkItem = styled.li`
   }
 `;
 
-const ArchivePage = ({ location, data }) => {
-  const projects = data.allMarkdownRemark.edges;
+export async function loader() {
+  return { projects: await getProjects() };
+}
+
+export const meta = createMeta({ title: 'All Work' });
+
+const ArchivePage = ({ loaderData }) => {
   const revealContainer = useRef(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -79,73 +82,44 @@ const ArchivePage = ({ location, data }) => {
     if (!prefersReducedMotion) {
       sr.reveal(revealContainer.current, srConfig(100, 0));
     }
-  }, []);
+  }, [prefersReducedMotion]);
 
   return (
-    <Layout location={location}>
-      <Helmet title="All Work" />
-      <main ref={revealContainer}>
-        <header>
-          <h1 className="big-heading">All Work</h1>
-          <p className="subtitle">Websites designed around clarity, credibility, and trust.</p>
-        </header>
+    <main ref={revealContainer}>
+      <header>
+        <h1 className="big-heading">All Work</h1>
+        <p className="subtitle">Websites designed around clarity, credibility, and trust.</p>
+      </header>
 
-        <StyledWorkList>
-          {projects.map(({ node }) => {
-            const { title, category, services = [], external, github } = node.frontmatter;
+      <StyledWorkList>
+        {loaderData.projects.map(({ frontmatter }) => {
+          const { title, category, services = [], external, github } = frontmatter;
 
-            return (
-              <StyledWorkItem key={title}>
-                <h2>{title}</h2>
-                <span className="category">{category}</span>
-                <span className="services">{services.join(' / ')}</span>
-                {(github || external) && (
-                  <span className="links">
-                    {github && (
-                      <a href={github} aria-label={`${title} source code`}>
-                        <Icon name="GitHub" />
-                      </a>
-                    )}
-                    {external && (
-                      <a href={external} aria-label={`Visit ${title}`}>
-                        <Icon name="External" />
-                      </a>
-                    )}
-                  </span>
-                )}
-              </StyledWorkItem>
-            );
-          })}
-        </StyledWorkList>
-      </main>
-    </Layout>
+          return (
+            <StyledWorkItem key={title}>
+              <h2>{title}</h2>
+              <span className="category">{category}</span>
+              <span className="services">{services.join(' / ')}</span>
+              {(github || external) && (
+                <span className="links">
+                  {github && (
+                    <a href={github} aria-label={`${title} source code`}>
+                      <Icon name="GitHub" />
+                    </a>
+                  )}
+                  {external && (
+                    <a href={external} aria-label={`Visit ${title}`}>
+                      <Icon name="External" />
+                    </a>
+                  )}
+                </span>
+              )}
+            </StyledWorkItem>
+          );
+        })}
+      </StyledWorkList>
+    </main>
   );
 };
 
-ArchivePage.propTypes = {
-  location: PropTypes.object.isRequired,
-  data: PropTypes.object.isRequired,
-};
-
 export default ArchivePage;
-
-export const pageQuery = graphql`
-  {
-    allMarkdownRemark(
-      filter: { fileAbsolutePath: { regex: "/content/projects/" } }
-      sort: { fields: [frontmatter___featuredOrder], order: ASC }
-    ) {
-      edges {
-        node {
-          frontmatter {
-            title
-            category
-            services
-            external
-            github
-          }
-        }
-      }
-    }
-  }
-`;

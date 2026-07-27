@@ -1,5 +1,7 @@
 # Project dependencies
 .cache
+.react-router
+build
 node_modules
 yarn-error.log
 package-lock.json

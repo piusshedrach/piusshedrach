@@ -1,6 +1,18 @@
-import ScrollReveal from 'scrollreveal';
+let scrollReveal;
 
-const isSSR = typeof window === 'undefined';
-const sr = isSSR ? null : ScrollReveal();
+const sr = {
+  async reveal(...args) {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    if (!scrollReveal) {
+      const { default: ScrollReveal } = await import('scrollreveal');
+      scrollReveal = ScrollReveal();
+    }
+
+    scrollReveal.reveal(...args);
+  },
+};
 
 export default sr;

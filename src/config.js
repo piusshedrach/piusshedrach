@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   email: 'piusshedrachdev@gmail.com',
 
   socialMedia: [
@@ -61,3 +61,6 @@ module.exports = {
     viewOffset: { top: 0, right: 0, bottom: 0, left: 0 },
   }),
 };
+
+export const { email, socialMedia, navLinks, colors, srConfig } = config;
+export default config;

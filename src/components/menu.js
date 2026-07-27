@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Helmet } from 'react-helmet';
-import { Link } from 'gatsby';
+import { Link } from 'react-router';
 import styled from 'styled-components';
 import { navLinks } from '@config';
 import { KEY_CODES } from '@utils';
@@ -221,6 +220,12 @@ const Menu = () => {
   };
 
   useEffect(() => {
+    document.body.classList.toggle('blur', menuOpen);
+
+    return () => document.body.classList.remove('blur');
+  }, [menuOpen]);
+
+  useEffect(() => {
     document.addEventListener('keydown', onKeyDown);
     window.addEventListener('resize', onResize);
 
@@ -237,10 +242,6 @@ const Menu = () => {
 
   return (
     <StyledMenu>
-      <Helmet>
-        <body className={menuOpen ? 'blur' : ''} />
-      </Helmet>
-
       <div ref={wrapperRef}>
         <StyledHamburgerButton
           onClick={toggleMenu}
