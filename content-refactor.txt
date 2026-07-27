@@ -1,0 +1,213 @@
+For your goals, I would **not** copy Brittany Chiang's portfolio structure verbatim.
+
+You're not trying to get hired as an engineer. You're trying to convince **business owners** to trust you with one of their most important assets—their website. They care less about React, TypeScript, and algorithms, and more about questions like:
+
+* Can this person make my business look credible?
+* Will this website help me get more customers?
+* Does this person understand businesses like mine?
+* Can I trust them to deliver?
+
+Your portfolio should feel less like a developer résumé and more like the website of a boutique digital studio.
+
+Here's a version tailored to the work you've been doing.
+
+---
+
+# Hero
+
+### Hi, I'm
+
+# Pius Shedrach
+
+## I design and build websites that help businesses earn trust and win more clients.
+
+I create fast, modern websites for businesses that want more than just an online presence. Every project is designed to communicate credibility, showcase what makes the business different, and make it easy for potential clients to take the next step.
+
+**View My Work**  **Let's Talk**
+
+---
+
+# About
+
+## More than a website.
+
+Most businesses already have a logo, social media, and a phone number.
+
+What many don't have is a website that answers the questions potential customers ask before they ever make contact.
+
+That's what I build.
+
+I work with businesses to create websites that look professional, load quickly, work beautifully on every device, and clearly communicate why someone should choose them.
+
+Whether it's a real estate company, consultancy, travel agency, or another service business, my focus is always the same:
+
+**Create a digital experience that builds confidence before the first conversation.**
+
+---
+
+## My approach
+
+Instead of starting with colors or layouts, I start with the business.
+
+* What questions do customers ask?
+* What makes the business different?
+* What information builds confidence?
+* What prevents people from reaching out?
+
+Then I design around those answers.
+
+The result is a website that doesn't just look good—it helps the business communicate more effectively.
+
+---
+
+# What I Do
+
+## Services
+
+### Business Websites
+
+Professional websites built from the ground up to represent your business with clarity and confidence.
+
+---
+
+### Website Redesigns
+
+Transform outdated websites into modern experiences that better reflect the quality of your business.
+
+---
+
+### Performance & Optimization
+
+Fast loading, responsive websites that work reliably across desktop and mobile devices.
+
+---
+
+### Ongoing Website Care
+
+Hosting guidance, updates, improvements, and technical support to keep your website performing well over time.
+
+---
+
+# Selected Work
+
+## Recent Projects
+
+Each project begins with understanding the business before designing the solution.
+
+### Property by Michael
+
+A premium real estate website designed to showcase listings while reinforcing trust through thoughtful content structure and refined visual presentation.
+
+**Real Estate • Responsive Design • Property Showcase**
+
+---
+
+### Amber Consult
+
+A complete redesign for a consultancy business, replacing an outdated website with a modern platform built for clarity, credibility, and easier content management.
+
+**Consultancy • Custom Development • WordPress CMS**
+
+---
+
+### Travel Agency Concept
+
+A modern concept exploring how travel businesses can communicate destinations, services, and trust through cleaner information architecture and engaging visuals.
+
+**Travel • UX Design • Web Development**
+
+---
+
+# Process
+
+## How We Work Together
+
+### 1. Discovery
+
+We discuss your business, goals, audience, and what your website should accomplish.
+
+---
+
+### 2. Strategy
+
+I organize the content, structure, and user experience before any development begins.
+
+---
+
+### 3. Design & Development
+
+Your website is designed and built with performance, responsiveness, and usability in mind.
+
+---
+
+### 4. Launch
+
+Once everything is tested and approved, your website goes live with continued support available afterward.
+
+---
+
+# Why Businesses Work With Me
+
+I believe the best websites don't shout.
+
+They communicate clearly.
+
+I pay attention to the small details—typography, spacing, content hierarchy, performance, and user experience—because those details shape how people perceive a business.
+
+Every decision is made with one question in mind:
+
+**"Will this make the business more trustworthy to a potential customer?"**
+
+---
+
+# Technologies
+
+## Built with modern tools
+
+React
+
+Next.js
+
+TypeScript
+
+WordPress (Headless CMS)
+
+HTML
+
+CSS
+
+Tailwind CSS
+
+JavaScript
+
+Firebase
+
+Supabase
+
+Git
+
+---
+
+# Contact
+
+## Let's build something your customers will trust.
+
+Whether you're launching a new business or improving an existing website, I'd be happy to hear about your project.
+
+**Email:** [piusshedrachdev@gmail.com](mailto:piusshedrachdev@gmail.com)
+
+**Let's Start a Conversation**
+
+---
+
+## A few strategic changes I'd make
+
+Compared to Brittany Chiang's portfolio, I'd also:
+
+* Replace **"Experience"** with **"Process"** or **"Services."** Business owners care more about how you'll work with them than where you've worked.
+* Move **"Featured Projects"** much higher on the page. Your work should sell itself early.
+* Add measurable outcomes where possible (e.g., "Redesigned a real estate website to improve clarity and showcase properties more effectively") rather than focusing on technologies.
+* Keep the technology stack concise and secondary. Mention it to demonstrate capability, but let the business value lead the narrative.
+* Use language centered on the client's goals—credibility, trust, inquiries, and conversions—instead of developer-centric terms like frameworks and tooling.
+
+The overall tone should make visitors think: **"This person understands businesses, not just websites."** That positioning aligns well with the clients you're targeting, such as consultancies, real estate firms, travel agencies, and other service businesses.

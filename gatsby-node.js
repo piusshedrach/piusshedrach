@@ -7,6 +7,26 @@
 const path = require('path');
 const _ = require('lodash');
 
+exports.createSchemaCustomization = ({ actions }) => {
+  actions.createTypes(`
+    type MarkdownRemarkFrontmatter {
+      title: String
+      description: String
+      date: Date @dateformat
+      slug: String
+      tags: [String]
+      draft: Boolean
+      featured: Boolean
+      featuredOrder: Int
+      category: String
+      services: [String]
+      external: String
+      github: String
+      cover: File @fileByRelativePath
+    }
+  `);
+};
+
 exports.createPages = async ({ actions, graphql, reporter }) => {
   const { createPage } = actions;
   const postTemplate = path.resolve(`src/templates/post.js`);
@@ -15,7 +35,10 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   const result = await graphql(`
     {
       postsRemark: allMarkdownRemark(
-        filter: { fileAbsolutePath: { regex: "/content/posts/" } }
+        filter: {
+          fileAbsolutePath: { regex: "/content/posts/" }
+          frontmatter: { draft: { ne: true } }
+        }
         sort: { order: DESC, fields: [frontmatter___date] }
         limit: 1000
       ) {
@@ -27,7 +50,13 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
           }
         }
       }
-      tagsGroup: allMarkdownRemark(limit: 2000) {
+      tagsGroup: allMarkdownRemark(
+        limit: 2000
+        filter: {
+          fileAbsolutePath: { regex: "/content/posts/" }
+          frontmatter: { draft: { ne: true } }
+        }
+      ) {
         group(field: frontmatter___tags) {
           fieldValue
         }
@@ -42,7 +71,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   }
 
   // Create post detail pages
-  const posts = result.data.postsRemark.edges;
+  const posts = result.data.postsRemark?.edges || [];
 
   posts.forEach(({ node }) => {
     createPage({
@@ -53,7 +82,7 @@ exports.createPages = async ({ actions, graphql, reporter }) => {
   });
 
   // Extract tag data from query
-  const tags = result.data.tagsGroup.group;
+  const tags = result.data.tagsGroup?.group || [];
   // Make tag pages
   tags.forEach(tag => {
     createPage({

@@ -5,53 +5,51 @@ import sr from '@utils/sr';
 import { usePrefersReducedMotion } from '@hooks';
 
 const StyledAboutSection = styled.section`
-  max-width: 900px;
+  max-width: 1000px;
 
   .inner {
     display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-gap: 50px;
+    grid-template-columns: minmax(0, 3fr) minmax(240px, 2fr);
+    gap: 60px;
+    align-items: start;
 
     @media (max-width: 768px) {
       display: block;
     }
   }
-`;
-const StyledText = styled.div`
-  ul.skills-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(140px, 200px));
-    grid-gap: 0 10px;
-    padding: 0;
-    margin: 20px 0 0 0;
-    overflow: hidden;
-    list-style: none;
 
-    li {
-      position: relative;
-      margin-bottom: 10px;
-      padding-left: 20px;
-      font-family: var(--font-mono);
-      font-size: var(--fz-xs);
+  .approach {
+    margin-top: 35px;
+    padding: 28px;
+    border-left: 2px solid var(--green);
+    background: var(--light-navy);
+    border-radius: var(--border-radius);
 
-      &:before {
-        content: '▹';
-        position: absolute;
-        left: 0;
-        color: var(--green);
-        font-size: var(--fz-sm);
-        line-height: 12px;
-      }
+    h3 {
+      margin-bottom: 15px;
+      font-size: var(--fz-xxl);
+    }
+
+    ul {
+      ${({ theme }) => theme.mixins.fancyList};
     }
   }
+
+  .trust-statement {
+    margin-top: 30px;
+    color: var(--lightest-slate);
+    font-size: var(--fz-xxl);
+    line-height: 1.35;
+  }
 `;
+
 const StyledPic = styled.div`
   position: relative;
   max-width: 300px;
 
   @media (max-width: 768px) {
-    margin: 50px auto 0;
     width: 70%;
+    margin: 50px auto 0;
   }
 
   .wrapper {
@@ -63,8 +61,7 @@ const StyledPic = styled.div`
     background-color: var(--green);
 
     &:hover,
-    &:focus {
-      outline: 0;
+    &:focus-within {
       transform: translate(-4px, -4px);
 
       &:after {
@@ -79,6 +76,10 @@ const StyledPic = styled.div`
 
     .img {
       position: relative;
+      z-index: 1;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      object-position: center 62%;
       border-radius: var(--border-radius);
       mix-blend-mode: multiply;
       filter: grayscale(100%) contrast(1);
@@ -101,13 +102,15 @@ const StyledPic = styled.div`
       left: 0;
       background-color: var(--navy);
       mix-blend-mode: screen;
+      z-index: 2;
+      pointer-events: none;
     }
 
     &:after {
-      border: 2px solid var(--green);
       top: 14px;
       left: 14px;
       z-index: -1;
+      border: 2px solid var(--green);
     }
   }
 `;
@@ -117,64 +120,51 @@ const About = () => {
   const prefersReducedMotion = usePrefersReducedMotion();
 
   useEffect(() => {
-    if (prefersReducedMotion) {
-      return;
+    if (!prefersReducedMotion) {
+      sr.reveal(revealContainer.current, srConfig());
     }
-
-    sr.reveal(revealContainer.current, srConfig());
   }, []);
-
-  const skills = ['JavaScript (ES6+)', 'TypeScript', 'React', 'Eleventy', 'Node.js', 'WordPress'];
 
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
-      <h2 className="numbered-heading">About Me</h2>
+      <h2 className="numbered-heading">More Than a Website</h2>
 
       <div className="inner">
-        <StyledText>
-          <div>
-            <p>
-              Hello! My name is Brittany and I enjoy creating things that live on the internet. My
-              interest in web development started back in 2012 when I decided to try editing custom
-              Tumblr themes — turns out hacking together a custom reblog button taught me a lot
-              about HTML &amp; CSS!
-            </p>
+        <div>
+          <p>Most businesses already have a logo, social media, and a phone number.</p>
+          <p>
+            What many do not have is a website that answers the questions potential customers ask
+            before they ever make contact. That is what I build.
+          </p>
+          <p>
+            I work with businesses to create websites that look professional, load quickly, work
+            beautifully on every device, and clearly communicate why someone should choose them.
+          </p>
+          <p>
+            Whether it is a real estate company, consultancy, travel agency, or another service
+            business, my focus is always the same: create a digital experience that builds
+            confidence before the first conversation.
+          </p>
 
-            <p>
-              Fast-forward to today, and I’ve had the privilege of working at{' '}
-              <a href="https://us.mullenlowe.com/">an advertising agency</a>,{' '}
-              <a href="https://starry.com/">a start-up</a>,{' '}
-              <a href="https://www.apple.com/">a huge corporation</a>, and{' '}
-              <a href="https://scout.camd.northeastern.edu/">a student-led design studio</a>. My
-              main focus these days is building accessible, inclusive products and digital
-              experiences at <a href="https://upstatement.com/">Upstatement</a> for a variety of
-              clients.
-            </p>
-
-            <p>
-              I also recently{' '}
-              <a href="https://www.newline.co/courses/build-a-spotify-connected-app">
-                launched a course
-              </a>{' '}
-              that covers everything you need to build a web app with the Spotify API using Node
-              &amp; React.
-            </p>
-
-            <p>Here are a few technologies I’ve been working with recently:</p>
+          <div className="approach">
+            <h3>My approach starts with the business.</h3>
+            <ul>
+              <li>What questions do customers ask?</li>
+              <li>What makes the business different?</li>
+              <li>What information builds confidence?</li>
+              <li>What prevents people from reaching out?</li>
+            </ul>
           </div>
 
-          <ul className="skills-list">
-            {skills && skills.map((skill, i) => <li key={i}>{skill}</li>)}
-          </ul>
-        </StyledText>
+          <p className="trust-statement">
+            Every decision is made with one question in mind: will this make the business more
+            trustworthy to a potential customer?
+          </p>
+        </div>
 
         <StyledPic>
           <div className="wrapper">
-            <img
-              className="img"
-              src="/portrait_compressed.webp"
-              alt="Pius Shedrach"
-            />
+            <img className="img" src="/portrait_compressed.webp" alt="Pius Shedrach" />
           </div>
         </StyledPic>
       </div>

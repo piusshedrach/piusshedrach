@@ -1,13 +1,20 @@
 const config = require('./src/config');
 
+const isProduction = process.env.NODE_ENV === 'production';
+const siteUrl = process.env.SITE_URL || 'http://localhost:8000';
+
+if (isProduction && !process.env.SITE_URL) {
+  throw new Error('SITE_URL is required for production builds.');
+}
+
 module.exports = {
   siteMetadata: {
-    title: 'Pius Shedrach',
+    title: 'Pius Shedrach | Business Websites',
     description:
-      'Brittany Chiang is a software engineer who specializes in building (and occasionally designing) exceptional digital experiences.',
-    siteUrl: 'https://brittanychiang.com', // No trailing slash allowed!
-    image: '/og.png', // Path to your image you placed in the 'static' folder
-    twitterUsername: '@bchiang7',
+      'Pius Shedrach designs and builds fast, modern websites that help businesses earn trust and win more clients.',
+    siteUrl,
+    image: '/og.png',
+    twitterUsername: '@PShedrach75368',
   },
   plugins: [
     `gatsby-plugin-react-helmet`,
@@ -21,12 +28,12 @@ module.exports = {
       resolve: `gatsby-plugin-manifest`,
       options: {
         name: 'Pius Shedrach',
-        short_name: 'Pius Shedrach',
+        short_name: 'Pius',
         start_url: '/',
         background_color: config.colors.darkNavy,
         theme_color: config.colors.navy,
         display: 'minimal-ui',
-        icon: 'src/images/logo.png',
+        icon: 'src/images/logo.webp',
       },
     },
     `gatsby-plugin-offline`,
@@ -147,12 +154,6 @@ module.exports = {
             },
           },
         ],
-      },
-    },
-    {
-      resolve: `gatsby-plugin-google-analytics`,
-      options: {
-        trackingId: 'UA-45666519-2',
       },
     },
   ],

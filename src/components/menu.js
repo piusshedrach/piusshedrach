@@ -147,7 +147,7 @@ const StyledSidebar = styled.aside`
     }
   }
 
-  .resume-link {
+  .project-link {
     ${({ theme }) => theme.mixins.bigButton};
     padding: 18px 50px;
     margin: 10% auto 0;
@@ -266,9 +266,9 @@ const Menu = () => {
               </ol>
             )}
 
-            <a href="/resume.pdf" className="resume-link">
-              Resume
-            </a>
+            <Link to="/#contact" className="project-link" onClick={() => setMenuOpen(false)}>
+              Start a Project
+            </Link>
           </nav>
         </StyledSidebar>
       </div>

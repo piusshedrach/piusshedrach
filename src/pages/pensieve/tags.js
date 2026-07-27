@@ -38,12 +38,14 @@ const TagsPage = ({
   location,
 }) => (
   <Layout location={location}>
-    <Helmet title="Tags" />
+    <Helmet title="Insight Tags">
+      <meta name="robots" content="noindex, nofollow" />
+    </Helmet>
 
     <StyledTagsContainer>
       <span className="breadcrumb">
         <span className="arrow">&larr;</span>
-        <Link to="/pensieve">All memories</Link>
+        <Link to="/pensieve">All insights</Link>
       </span>
 
       <h1>Tags</h1>
@@ -83,7 +85,13 @@ export default TagsPage;
 
 export const pageQuery = graphql`
   query {
-    allMarkdownRemark(limit: 2000, filter: { frontmatter: { draft: { ne: true } } }) {
+    allMarkdownRemark(
+      limit: 2000
+      filter: {
+        fileAbsolutePath: { regex: "/content/posts/" }
+        frontmatter: { draft: { ne: true } }
+      }
+    ) {
       group(field: frontmatter___tags) {
         fieldValue
         totalCount
