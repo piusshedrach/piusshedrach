@@ -1,6 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { getPreRenderedRoutes } from '../src/data/content.server.js';
+import { getPublicRoutes } from '../src/data/content.server.js';
 
 const siteUrl = process.env.SITE_URL?.replace(/\/+$/, '');
 
@@ -9,7 +9,7 @@ if (!siteUrl) {
 }
 
 const outputDirectory = path.resolve('build/client');
-const routes = await getPreRenderedRoutes();
+const routes = await getPublicRoutes();
 const urls = routes.map(route => new URL(route, siteUrl).href);
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -28,11 +28,11 @@ await Promise.all([
   fs.writeFile(path.join(outputDirectory, 'robots.txt'), robots),
 ]);
 
-const indexPath = path.join(outputDirectory, 'index.html');
+const preRenderedNotFoundPath = path.join(outputDirectory, '404', 'index.html');
 const notFoundPath = path.join(outputDirectory, '404.html');
 
 try {
-  await fs.copyFile(indexPath, notFoundPath);
+  await fs.copyFile(preRenderedNotFoundPath, notFoundPath);
 } catch {
-  // React Router can emit a nested index depending on the adapter configuration.
+  // The build output is validated separately by React Router.
 }

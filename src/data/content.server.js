@@ -186,7 +186,7 @@ export async function getContentIndex() {
   return { projects, posts, tags };
 }
 
-export async function getPreRenderedRoutes() {
+export async function getPublicRoutes() {
   const { posts, tags } = await getContentIndex();
   const routes = ['/', '/archive', '/pensieve', '/pensieve/tags'];
 
@@ -194,4 +194,11 @@ export async function getPreRenderedRoutes() {
   tags.forEach(tag => routes.push(`/pensieve/tags/${tag.slug}`));
 
   return Array.from(new Set(routes.map(normalizePath)));
+}
+
+export async function getPreRenderedRoutes() {
+  const publicRoutes = await getPublicRoutes();
+
+  // Keep dynamic route loaders valid even before the first post or tag exists.
+  return [...publicRoutes, '/404', '/pensieve/tags/__not-found'];
 }

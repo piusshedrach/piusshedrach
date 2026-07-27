@@ -6,6 +6,8 @@ import path from 'node:path';
 import { afterEach, describe, expect, it } from 'vitest';
 import {
   getPosts,
+  getPreRenderedRoutes,
+  getPublicRoutes,
   groupPostsByTag,
   parseMarkdownDocument,
   renderMarkdown,
@@ -77,5 +79,15 @@ describe('content helpers', () => {
     expect(posts.map(post => post.frontmatter.title)).toEqual(['Newer', 'Older']);
     expect(groups.get('design').posts).toHaveLength(2);
     expect(groups.get('strategy').posts).toHaveLength(1);
+  });
+
+  it('keeps internal dynamic-route fallbacks out of public URLs', async () => {
+    const publicRoutes = await getPublicRoutes();
+    const preRenderedRoutes = await getPreRenderedRoutes();
+
+    expect(publicRoutes).not.toContain('/404');
+    expect(publicRoutes).not.toContain('/pensieve/tags/__not-found');
+    expect(preRenderedRoutes).toContain('/404');
+    expect(preRenderedRoutes).toContain('/pensieve/tags/__not-found');
   });
 });
