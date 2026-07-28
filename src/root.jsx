@@ -7,7 +7,7 @@ import {
   Scripts,
   ScrollRestoration,
 } from 'react-router';
-import { Layout } from '@components';
+import { Layout as SiteLayout } from '@components';
 import favicon16 from '@images/favicons/favicon-16x16.png';
 import favicon32 from '@images/favicons/favicon-32x32.png';
 import appleTouchIcon from '@images/favicons/apple-icon-180x180.png';
@@ -19,7 +19,7 @@ export const links = () => [
   { rel: 'manifest', href: '/manifest.webmanifest' },
 ];
 
-export function LayoutDocument({ children }) {
+export function Layout({ children }) {
   return (
     <html lang="en">
       <head>
@@ -38,14 +38,14 @@ export function LayoutDocument({ children }) {
   );
 }
 
-LayoutDocument.propTypes = {
+Layout.propTypes = {
   children: PropTypes.node.isRequired,
 };
 
 export default function App() {
   return (
-    <Layout>
+    <SiteLayout>
       <Outlet />
-    </Layout>
+    </SiteLayout>
   );
 }
