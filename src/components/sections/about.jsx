@@ -112,6 +112,19 @@ const StyledPic = styled.div`
       z-index: -1;
       border: 2px solid var(--green);
     }
+
+    @media (max-width: 768px) {
+      background-color: transparent;
+
+      .img {
+        mix-blend-mode: normal;
+        filter: none;
+      }
+
+      &:before {
+        display: none;
+      }
+    }
   }
 `;
 

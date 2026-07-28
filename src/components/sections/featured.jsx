@@ -97,6 +97,11 @@ const StyledProject = styled.li`
     height: 100%;
     opacity: 0.46;
     filter: grayscale(100%) contrast(1.1);
+
+    @media (max-width: 900px) {
+      opacity: 1;
+      filter: none;
+    }
   }
 
   .project-content {
