@@ -55,6 +55,7 @@ const StyledWorkItem = styled.li`
 
   .links {
     display: flex;
+    align-items: center;
     gap: 14px;
 
     a {
@@ -64,6 +65,11 @@ const StyledWorkItem = styled.li`
         width: 20px;
         height: 20px;
       }
+    }
+
+    .website-link {
+      ${({ theme }) => theme.mixins.smallButton};
+      white-space: nowrap;
     }
   }
 `;
@@ -104,8 +110,12 @@ const ArchivePage = ({ projects = portfolioData.projects }) => {
                     </a>
                   )}
                   {external && (
-                    <a href={external} aria-label={`Visit ${title}`}>
-                      <Icon name="External" />
+                    <a
+                      className="website-link"
+                      href={external}
+                      aria-label={`View ${title} website`}
+                    >
+                      View Website
                     </a>
                   )}
                 </span>

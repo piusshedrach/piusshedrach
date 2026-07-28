@@ -137,6 +137,7 @@ const StyledProject = styled.li`
 
   .project-links {
     display: flex;
+    align-items: center;
     gap: 14px;
     margin-top: 22px;
 
@@ -148,6 +149,10 @@ const StyledProject = styled.li`
         width: 20px;
         height: 20px;
       }
+    }
+
+    .website-link {
+      ${({ theme }) => theme.mixins.smallButton};
     }
   }
 `;
@@ -179,7 +184,7 @@ const Featured = ({ projects }) => {
           const { category, cover, external, github, services = [], title } = frontmatter;
 
           return (
-            <StyledProject key={title} ref={el => (revealProjects.current[i] = el)}>
+            <StyledProject key={title} ref={(el) => (revealProjects.current[i] = el)}>
               <div className="project-visual">
                 {cover && (
                   <img
@@ -201,13 +206,10 @@ const Featured = ({ projects }) => {
               <div className="project-content">
                 <p className="project-overline">Selected Project</p>
                 <h3>{title}</h3>
-                <div
-                  className="project-description"
-                  dangerouslySetInnerHTML={{ __html: html }}
-                />
+                <div className="project-description" dangerouslySetInnerHTML={{ __html: html }} />
 
                 <ul className="project-services">
-                  {services.map(service => (
+                  {services.map((service) => (
                     <li key={service}>{service}</li>
                   ))}
                 </ul>
@@ -220,8 +222,12 @@ const Featured = ({ projects }) => {
                       </a>
                     )}
                     {external && (
-                      <a href={external} aria-label={`Visit ${title}`}>
-                        <Icon name="External" />
+                      <a
+                        className="website-link"
+                        href={external}
+                        aria-label={`View ${title} website`}
+                      >
+                        View Website
                       </a>
                     )}
                   </div>
