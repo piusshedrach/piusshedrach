@@ -65,7 +65,7 @@ const Hero = () => {
       Pius Shedrach.
     </h2>,
     <h3 key="value-proposition" className="big-heading">
-      I design and build websites that help businesses earn trust and win more clients.
+      I build websites that grow businesses.
     </h3>,
     <p key="description">
       I create fast, modern websites for businesses that want more than just an online presence.
