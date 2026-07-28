@@ -210,6 +210,5 @@ export async function getPublicRoutes() {
 export async function getPreRenderedRoutes() {
   const publicRoutes = await getPublicRoutes();
 
-  // Keep dynamic route loaders valid even before the first post or tag exists.
-  return [...publicRoutes, '/404', '/pensieve/tags/__not-found'];
+  return Array.from(new Set([...publicRoutes, '/404']));
 }

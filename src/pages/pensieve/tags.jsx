@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router';
 import styled from 'styled-components';
 import { createMeta } from '@utils/seo';
+import portfolioData from 'virtual:portfolio-data';
 
 const StyledTagsContainer = styled.main`
   max-width: 1000px;
@@ -29,25 +30,9 @@ const StyledTagsContainer = styled.main`
   }
 `;
 
-export async function loader() {
-  const { getPosts, groupPostsByTag } = await import('../../data/content.server.js');
-  const posts = await getPosts();
-  const tags = Array.from(groupPostsByTag(posts).values()).sort((a, b) =>
-    a.name.localeCompare(b.name),
-  );
-
-  return {
-    tags: tags.map(tag => ({
-      name: tag.name,
-      slug: tag.slug,
-      totalCount: tag.posts.length,
-    })),
-  };
-}
-
 export const meta = createMeta({ title: 'Insight Tags', noindex: true });
 
-const TagsPage = ({ loaderData }) => (
+const TagsPage = ({ tags = portfolioData.tags }) => (
   <StyledTagsContainer>
     <span className="breadcrumb">
       <span className="arrow">&larr;</span>
@@ -56,10 +41,11 @@ const TagsPage = ({ loaderData }) => (
 
     <h1>Tags</h1>
     <ul className="fancy-list">
-      {loaderData.tags.map(tag => (
+      {tags.map(tag => (
         <li key={tag.slug}>
           <Link to={`/pensieve/tags/${tag.slug}`} className="inline-link">
-            {tag.name} <span className="count">({tag.totalCount})</span>
+            {tag.name}{' '}
+            <span className="count">({tag.totalCount ?? tag.posts.length})</span>
           </Link>
         </li>
       ))}

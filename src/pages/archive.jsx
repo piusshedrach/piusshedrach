@@ -5,6 +5,7 @@ import { srConfig } from '@config';
 import sr from '@utils/sr';
 import { createMeta } from '@utils/seo';
 import { usePrefersReducedMotion } from '@hooks';
+import portfolioData from 'virtual:portfolio-data';
 
 const StyledWorkList = styled.ul`
   ${({ theme }) => theme.mixins.resetList};
@@ -67,14 +68,9 @@ const StyledWorkItem = styled.li`
   }
 `;
 
-export async function loader() {
-  const { getProjects } = await import('../data/content.server.js');
-  return { projects: await getProjects() };
-}
-
 export const meta = createMeta({ title: 'All Work' });
 
-const ArchivePage = ({ loaderData }) => {
+const ArchivePage = ({ projects = portfolioData.projects }) => {
   const revealContainer = useRef(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
@@ -92,7 +88,7 @@ const ArchivePage = ({ loaderData }) => {
       </header>
 
       <StyledWorkList>
-        {loaderData.projects.map(({ frontmatter }) => {
+        {projects.map(({ frontmatter }) => {
           const { title, category, services = [], external, github } = frontmatter;
 
           return (

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import styled from 'styled-components';
 import { usePrefersReducedMotion } from '@hooks';
 import { navDelay } from '@utils';
 import { normalizePath, slugify } from '@utils/content';
 import { createMeta } from '@utils/seo';
+import portfolioData from 'virtual:portfolio-data';
 
 const StyledPostContainer = styled.main`
   max-width: 1000px;
@@ -76,19 +77,12 @@ const StyledHomeButton = styled(Link)`
   margin-top: 40px;
 `;
 
-export async function loader({ request }) {
-  const { getPosts } = await import('../data/content.server.js');
-  const pathname = normalizePath(new URL(request.url).pathname);
-  const posts = await getPosts();
-  const post = posts.find(candidate => candidate.frontmatter.slug === pathname) || null;
-
-  return { post };
-}
-
 export function meta(args) {
-  const title = args.data?.post?.frontmatter.title || 'Page Not Found';
-  const description = args.data?.post?.frontmatter.description;
-  return createMeta({ title, description, noindex: !args.data?.post })(args);
+  const pathname = normalizePath(args.location.pathname);
+  const post = portfolioData.posts.find(candidate => candidate.frontmatter.slug === pathname);
+  const title = post?.frontmatter.title || 'Page Not Found';
+  const description = post?.frontmatter.description;
+  return createMeta({ title, description, noindex: !post })(args);
 }
 
 function NotFoundPage() {
@@ -117,12 +111,16 @@ function NotFoundPage() {
   );
 }
 
-const PostTemplate = ({ loaderData }) => {
-  if (!loaderData.post) {
+const PostTemplate = () => {
+  const location = useLocation();
+  const pathname = normalizePath(location.pathname);
+  const post = portfolioData.posts.find(candidate => candidate.frontmatter.slug === pathname);
+
+  if (!post) {
     return <NotFoundPage />;
   }
 
-  const { frontmatter, html } = loaderData.post;
+  const { frontmatter, html } = post;
   const { title, date, tags = [] } = frontmatter;
 
   return (

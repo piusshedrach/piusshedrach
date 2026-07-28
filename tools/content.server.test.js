@@ -86,8 +86,6 @@ describe('content helpers', () => {
     const preRenderedRoutes = await getPreRenderedRoutes();
 
     expect(publicRoutes).not.toContain('/404');
-    expect(publicRoutes).not.toContain('/pensieve/tags/__not-found');
     expect(preRenderedRoutes).toContain('/404');
-    expect(preRenderedRoutes).toContain('/pensieve/tags/__not-found');
   });
 });

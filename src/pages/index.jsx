@@ -10,25 +10,24 @@ import {
   Contact,
 } from '@components';
 import { createMeta } from '@utils/seo';
+import portfolioData from 'virtual:portfolio-data';
 
 const StyledMainContainer = styled.main`
   counter-reset: section;
 `;
 
-export async function loader() {
-  const { getProjects } = await import('../data/content.server.js');
-  const projects = await getProjects();
-  return { projects: projects.filter(project => project.frontmatter.featured === true) };
-}
-
 export const meta = createMeta();
 
-const IndexPage = ({ loaderData }) => (
+const featuredProjects = portfolioData.projects.filter(
+  project => project.frontmatter.featured === true,
+);
+
+const IndexPage = ({ projects = featuredProjects }) => (
   <StyledMainContainer className="fillHeight">
     <Hero />
     <About />
     <Services />
-    <Featured projects={loaderData.projects} />
+    <Featured projects={projects} />
     <Process />
     <Technologies />
     <Contact />

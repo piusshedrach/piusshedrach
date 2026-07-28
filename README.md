@@ -38,6 +38,8 @@ deploying. If it is omitted on Vercel, the build uses Vercel's production projec
 - Project case studies live in `content/projects`.
 - Insights posts live in `content/posts`.
 - Relative project cover paths resolve from the Markdown file and are emitted under `/content`.
+- Vite processes Markdown once at build time and exposes the result to routes through a generated
+  virtual module; routes do not perform filesystem reads at runtime.
 
 Post frontmatter supports `title`, `description`, `date`, `slug`, `tags`, and `draft`. Project
 frontmatter supports `title`, `date`, `featured`, `featuredOrder`, `category`, `services`,

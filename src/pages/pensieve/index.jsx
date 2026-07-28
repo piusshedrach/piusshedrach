@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import styled from 'styled-components';
 import { createMeta } from '@utils/seo';
 import { slugify } from '@utils/content';
+import portfolioData from 'virtual:portfolio-data';
 
 const StyledMain = styled.main`
   max-width: 1000px;
@@ -56,16 +57,9 @@ const StyledMain = styled.main`
   }
 `;
 
-export async function loader() {
-  const { getPosts } = await import('../../data/content.server.js');
-  return { posts: await getPosts() };
-}
-
 export const meta = createMeta({ title: 'Insights', noindex: true });
 
-const InsightsPage = ({ loaderData }) => {
-  const { posts } = loaderData;
-
+const InsightsPage = ({ posts = portfolioData.posts }) => {
   return (
     <StyledMain>
       <header>

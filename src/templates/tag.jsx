@@ -1,8 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router';
+import { Link, useParams } from 'react-router';
 import styled from 'styled-components';
 import { createMeta } from '@utils/seo';
 import { slugify } from '@utils/content';
+import portfolioData from 'virtual:portfolio-data';
 
 const StyledTagsContainer = styled.main`
   max-width: 1000px;
@@ -46,23 +47,17 @@ const StyledTagsContainer = styled.main`
   }
 `;
 
-export async function loader({ params }) {
-  const { getPosts, groupPostsByTag } = await import('../data/content.server.js');
-  const posts = await getPosts();
-  const tag = groupPostsByTag(posts).get(params.tag);
-
-  return {
-    tag: tag ? { name: tag.name, slug: tag.slug, posts: tag.posts } : null,
-  };
-}
-
 export function meta(args) {
-  const title = args.data?.tag ? `Tagged: #${args.data.tag.name}` : 'Tag Not Found';
-  return createMeta({ title, noindex: !args.data?.tag })(args);
+  const tag = portfolioData.tags.find(candidate => candidate.slug === args.params.tag);
+  const title = tag ? `Tagged: #${tag.name}` : 'Tag Not Found';
+  return createMeta({ title, noindex: !tag })(args);
 }
 
-const TagTemplate = ({ loaderData }) => {
-  if (!loaderData.tag) {
+const TagTemplate = () => {
+  const params = useParams();
+  const tag = portfolioData.tags.find(candidate => candidate.slug === params.tag);
+
+  if (!tag) {
     return (
       <StyledTagsContainer>
         <h1>Tag not found</h1>
@@ -71,7 +66,7 @@ const TagTemplate = ({ loaderData }) => {
     );
   }
 
-  const { name, posts } = loaderData.tag;
+  const { name, posts } = tag;
 
   return (
     <StyledTagsContainer>

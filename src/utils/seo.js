@@ -1,19 +1,8 @@
-const defaultMetadata = {
-  title: 'Pius Shedrach | Business Websites',
-  description:
-    'Pius Shedrach designs and builds fast, modern websites that help businesses earn trust and win more clients.',
-  siteUrl: 'http://localhost:5173',
-  image: '/og.png',
-  twitterUsername: '@PShedrach75368',
-};
-
-function getSiteMetadata(matches = []) {
-  return matches.find(match => match.data?.siteMetadata)?.data.siteMetadata || defaultMetadata;
-}
+import portfolioData from 'virtual:portfolio-data';
 
 export function createMeta({ title, description, image, noindex = false } = {}) {
-  return ({ location, matches }) => {
-    const site = getSiteMetadata(matches);
+  return ({ location }) => {
+    const site = portfolioData.siteMetadata;
     const pageTitle = title ? `${title} | ${site.title}` : site.title;
     const pageDescription = description || site.description;
     const imageUrl = new URL(image || site.image, site.siteUrl).href;

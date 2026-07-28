@@ -6,28 +6,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData,
 } from 'react-router';
 import { Layout } from '@components';
 import favicon16 from '@images/favicons/favicon-16x16.png';
 import favicon32 from '@images/favicons/favicon-32x32.png';
 import appleTouchIcon from '@images/favicons/apple-icon-180x180.png';
-
-export async function loader() {
-  const { getSiteUrl } = await import('../tools/site-url.js');
-  const siteUrl = getSiteUrl();
-
-  return {
-    siteMetadata: {
-      title: 'Pius Shedrach | Business Websites',
-      description:
-        'Pius Shedrach designs and builds fast, modern websites that help businesses earn trust and win more clients.',
-      siteUrl,
-      image: '/og.png',
-      twitterUsername: '@PShedrach75368',
-    },
-  };
-}
 
 export const links = () => [
   { rel: 'icon', type: 'image/png', sizes: '16x16', href: favicon16 },
@@ -60,10 +43,8 @@ LayoutDocument.propTypes = {
 };
 
 export default function App() {
-  const { siteMetadata } = useLoaderData();
-
   return (
-    <Layout siteMetadata={siteMetadata}>
+    <Layout>
       <Outlet />
     </Layout>
   );

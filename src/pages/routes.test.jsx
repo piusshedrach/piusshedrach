@@ -19,17 +19,15 @@ describe('static routes', () => {
   it('renders projects on the archive route', () => {
     renderRoute(
       <ArchivePage
-        loaderData={{
-          projects: [
-            {
-              frontmatter: {
-                title: 'Example Project',
-                category: 'Consultancy',
-                services: ['Strategy'],
-              },
+        projects={[
+          {
+            frontmatter: {
+              title: 'Example Project',
+              category: 'Consultancy',
+              services: ['Strategy'],
             },
-          ],
-        }}
+          },
+        ]}
       />,
       '/archive',
     );
@@ -39,7 +37,7 @@ describe('static routes', () => {
   });
 
   it('renders the empty Insights state', () => {
-    renderRoute(<InsightsPage loaderData={{ posts: [] }} />, '/pensieve');
+    renderRoute(<InsightsPage posts={[]} />, '/pensieve');
 
     expect(screen.getByText('Original articles are being prepared.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Return home' })).toHaveAttribute('href', '/');
@@ -48,9 +46,7 @@ describe('static routes', () => {
   it('renders populated tags', () => {
     renderRoute(
       <TagsPage
-        loaderData={{
-          tags: [{ name: 'Design', slug: 'design', totalCount: 2 }],
-        }}
+        tags={[{ name: 'Design', slug: 'design', totalCount: 2 }]}
       />,
       '/pensieve/tags',
     );
