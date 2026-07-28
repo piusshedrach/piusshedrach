@@ -1,6 +1,5 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import matter from 'gray-matter';
 import rehypeExternalLinks from 'rehype-external-links';
 import rehypeHighlight from 'rehype-highlight';
@@ -11,7 +10,9 @@ import remarkRehype from 'remark-rehype';
 import { unified } from 'unified';
 import { normalizePath, slugify } from '../utils/content.js';
 
-const rootDirectory = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
+// React Router bundles this module into build/server, so import.meta.url no longer
+// points at the repository. Vercel and the local scripts run from the project root.
+const rootDirectory = process.cwd();
 const contentDirectory = path.join(rootDirectory, 'content');
 const projectsDirectory = path.join(contentDirectory, 'projects');
 const postsDirectory = path.join(contentDirectory, 'posts');
@@ -82,7 +83,17 @@ function walkTree(node, callback, parent, index) {
 }
 
 async function readMarkdownDirectory(directory) {
-  const entries = await fs.readdir(directory, { withFileTypes: true });
+  let entries;
+
+  try {
+    entries = await fs.readdir(directory, { withFileTypes: true });
+  } catch (error) {
+    if (error.code === 'ENOENT') {
+      throw new Error(`Content directory was not found: ${directory}`, { cause: error });
+    }
+
+    throw error;
+  }
   const filenames = entries
     .filter(entry => entry.isFile() && entry.name.endsWith('.md'))
     .map(entry => entry.name);
