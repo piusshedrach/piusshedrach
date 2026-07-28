@@ -1,48 +1,57 @@
 import { css } from 'styled-components';
 
-// https://reactcommunity.org/react-transition-group/css-transition
-
 const TransitionStyles = css`
-  /* Fade up */
-  .fadeup-enter {
-    opacity: 0.01;
-    transform: translateY(20px);
-    transition: opacity 300ms var(--easing), transform 300ms var(--easing);
+  @keyframes fadeUp {
+    from {
+      opacity: 0.01;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  .fadeup-enter-active {
-    opacity: 1;
-    transform: translateY(0px);
-    transition: opacity 300ms var(--easing), transform 300ms var(--easing);
+  @keyframes fadeDown {
+    from {
+      opacity: 0.01;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
-  /* Fade down */
-  .fadedown-enter {
-    opacity: 0.01;
-    transform: translateY(-20px);
-    transition: opacity 300ms var(--easing), transform 300ms var(--easing);
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 
-  .fadedown-enter-active {
-    opacity: 1;
-    transform: translateY(0px);
-    transition: opacity 300ms var(--easing), transform 300ms var(--easing);
-  }
+  @media (prefers-reduced-motion: no-preference) {
+    .fade-up,
+    .fade-down,
+    .fade-in {
+      animation-duration: 300ms;
+      animation-timing-function: var(--easing);
+      animation-fill-mode: both;
+    }
 
-  /* Fade */
-  .fade-enter {
-    opacity: 0;
-  }
-  .fade-enter-active {
-    opacity: 1;
-    transition: opacity 300ms var(--easing);
-  }
-  .fade-exit {
-    opacity: 1;
-  }
-  .fade-exit-active {
-    opacity: 0;
-    transition: opacity 300ms var(--easing);
+    .fade-up {
+      animation-name: fadeUp;
+    }
+
+    .fade-down {
+      animation-name: fadeDown;
+    }
+
+    .fade-in {
+      animation-name: fadeIn;
+    }
   }
 `;
 
