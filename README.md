@@ -30,7 +30,7 @@ SITE_URL=https://your-domain.example yarn build
 ```
 
 The static deployment output is written to `build/client`. Set `SITE_URL` in Vercel before
-deploying.
+deploying. If it is omitted on Vercel, the build uses Vercel's production project domain.
 
 ## Content
 

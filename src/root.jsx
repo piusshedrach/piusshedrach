@@ -13,21 +13,16 @@ import favicon16 from '@images/favicons/favicon-16x16.png';
 import favicon32 from '@images/favicons/favicon-32x32.png';
 import appleTouchIcon from '@images/favicons/apple-icon-180x180.png';
 
-const defaultSiteUrl = 'http://localhost:5173';
-
-export function loader() {
-  const siteUrl = process.env.SITE_URL || defaultSiteUrl;
-
-  if (process.env.NODE_ENV === 'production' && !process.env.SITE_URL) {
-    throw new Error('SITE_URL is required for production builds.');
-  }
+export async function loader() {
+  const { getSiteUrl } = await import('../tools/site-url.js');
+  const siteUrl = getSiteUrl();
 
   return {
     siteMetadata: {
       title: 'Pius Shedrach | Business Websites',
       description:
         'Pius Shedrach designs and builds fast, modern websites that help businesses earn trust and win more clients.',
-      siteUrl: siteUrl.replace(/\/+$/, ''),
+      siteUrl,
       image: '/og.png',
       twitterUsername: '@PShedrach75368',
     },

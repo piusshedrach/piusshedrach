@@ -1,12 +1,9 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { getPublicRoutes } from '../src/data/content.server.js';
+import { getSiteUrl } from './site-url.js';
 
-const siteUrl = process.env.SITE_URL?.replace(/\/+$/, '');
-
-if (!siteUrl) {
-  throw new Error('SITE_URL is required to generate sitemap.xml and robots.txt.');
-}
+const siteUrl = getSiteUrl({ allowLocal: false });
 
 const outputDirectory = path.resolve('build/client');
 const routes = await getPublicRoutes();
