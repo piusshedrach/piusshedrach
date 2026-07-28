@@ -8,7 +8,7 @@ services:
   - Consultancy
   - Custom Development
   - WordPress CMS
-external:
+external: 'https://consultamber.com/'
 github:
 cover:
 ---

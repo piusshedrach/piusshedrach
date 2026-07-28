@@ -8,7 +8,7 @@ services:
   - Real Estate
   - Responsive Design
   - Property Showcase
-external:
+external: 'https://propertypbm.vercel.app/'
 github:
 cover:
 ---
