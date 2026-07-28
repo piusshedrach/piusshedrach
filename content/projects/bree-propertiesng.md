@@ -2,7 +2,7 @@
 title: 'BREE PROPERTIESng'
 date:
 featured: true
-featuredOrder: 5
+featuredOrder: 3
 category: 'Luxury Real Estate'
 services:
   - Property Portfolio

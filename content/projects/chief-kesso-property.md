@@ -2,7 +2,7 @@
 title: 'Chief Kesso Properties'
 date:
 featured: true
-featuredOrder: 6
+featuredOrder: 1
 category: 'Real Estate'
 services:
   - Property Listings

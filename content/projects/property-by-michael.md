@@ -2,7 +2,7 @@
 title: 'Property by Michael'
 date:
 featured: true
-featuredOrder: 1
+featuredOrder: 2
 category: 'Real Estate'
 services:
   - Real Estate

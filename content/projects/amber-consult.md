@@ -2,7 +2,7 @@
 title: 'Amber Consult'
 date:
 featured: true
-featuredOrder: 2
+featuredOrder: 5
 category: 'Consultancy'
 services:
   - Consultancy
