@@ -15,7 +15,7 @@
   ],
   "license": "MIT",
   "engines": {
-    "node": ">=22.22.0"
+    "node": "22.x"
   },
   "scripts": {
     "build": "react-router build && node tools/generate-seo.js",
