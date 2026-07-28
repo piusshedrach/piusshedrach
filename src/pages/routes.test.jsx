@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router';
 import { ThemeProvider } from 'styled-components';
+import { describe, expect, it } from 'vitest';
 import theme from '@styles/theme';
 import ArchivePage from './archive';
 import InsightsPage from './pensieve';
@@ -45,9 +46,7 @@ describe('static routes', () => {
 
   it('renders populated tags', () => {
     renderRoute(
-      <TagsPage
-        tags={[{ name: 'Design', slug: 'design', totalCount: 2 }]}
-      />,
+      <TagsPage tags={[{ name: 'Design', slug: 'design', totalCount: 2 }]} />,
       '/pensieve/tags',
     );
 

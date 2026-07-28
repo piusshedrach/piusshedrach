@@ -2,6 +2,7 @@ import path from 'node:path';
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { reactRouter } from '@react-router/dev/vite';
+import react from '@vitejs/plugin-react';
 import { defineConfig } from 'vite';
 import { getContentIndex } from './src/data/content.server.js';
 import { getSiteUrl } from './tools/site-url.js';
@@ -38,7 +39,7 @@ function portfolioData(siteUrl) {
         },
         projects: content.projects.map(toPublicEntry),
         posts: content.posts.map(toPublicEntry),
-        tags: content.tags.map(tag => ({
+        tags: content.tags.map((tag) => ({
           name: tag.name,
           slug: tag.slug,
           posts: tag.posts.map(toPublicEntry),
@@ -89,7 +90,7 @@ function findContentAssets(directory) {
     return [];
   }
 
-  return fs.readdirSync(directory, { withFileTypes: true }).flatMap(entry => {
+  return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const entryPath = path.join(directory, entry.name);
     if (entry.isDirectory()) {
       return findContentAssets(entryPath);
@@ -98,11 +99,16 @@ function findContentAssets(directory) {
   });
 }
 
-export default defineConfig(({ command }) => {
+export default defineConfig(({ command, mode }) => {
   const siteUrl = getSiteUrl({ allowLocal: command !== 'build' });
+  const plugins =
+    mode === 'test'
+      ? [react(), portfolioData(siteUrl)]
+      : [reactRouter(), portfolioData(siteUrl), contentAssets()];
 
   return {
-    plugins: [reactRouter(), portfolioData(siteUrl), contentAssets()],
+    plugins,
+    publicDir: 'static',
     resolve: {
       alias: {
         '@components': path.resolve(rootDirectory, 'src/components'),
@@ -114,6 +120,9 @@ export default defineConfig(({ command }) => {
         '@styles': path.resolve(rootDirectory, 'src/styles'),
         '@utils': path.resolve(rootDirectory, 'src/utils'),
       },
+    },
+    ssr: {
+      noExternal: ['styled-components'],
     },
     test: {
       environment: 'jsdom',

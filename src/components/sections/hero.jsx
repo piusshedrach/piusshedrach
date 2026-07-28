@@ -74,20 +74,22 @@ const Hero = () => {
   }, []);
 
   const items = [
-    <h1>Hi, I'm</h1>,
-    <h2 className="big-heading">Pius Shedrach.</h2>,
-    <h3 className="big-heading">
+    <h1 key="intro">{`Hi, I'm`}</h1>,
+    <h2 key="name" className="big-heading">
+      Pius Shedrach.
+    </h2>,
+    <h3 key="value-proposition" className="big-heading">
       I design and build websites that help businesses earn trust and win more clients.
     </h3>,
-    <p>
+    <p key="description">
       I create fast, modern websites for businesses that want more than just an online presence.
       Every project is designed to communicate credibility, showcase what makes the business
       different, and make it easy for potential clients to take the next step.
     </p>,
-    <div className="hero-actions">
+    <div key="actions" className="hero-actions">
       <a href="#work">View My Work</a>
       <a className="secondary" href="#contact">
-        Let's Talk
+        {`Let's Talk`}
       </a>
     </div>,
   ];
