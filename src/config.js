@@ -1,5 +1,6 @@
 const config = {
   email: 'piusshedrachdev@gmail.com',
+  whatsapp: '2349152300793',
 
   socialMedia: [
     {
@@ -62,5 +63,5 @@ const config = {
   }),
 };
 
-export const { email, socialMedia, navLinks, colors, srConfig } = config;
+export const { email, whatsapp, socialMedia, navLinks, colors, srConfig } = config;
 export default config;

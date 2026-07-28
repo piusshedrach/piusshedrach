@@ -133,12 +133,12 @@ const About = () => {
         <div>
           <p>Most businesses already have a logo, social media, and a phone number.</p>
           <p>
-            What many do not have is a website that answers the questions potential customers ask
+            What many do not have is a place that answers the questions potential customers ask
             before they ever make contact. That is what I build.
           </p>
           <p>
-            I work with businesses to create websites that look professional, load quickly, work
-            beautifully on every device, and clearly communicate why someone should choose them.
+            I work with businesses to create websites that look professional and clearly communicate
+            why someone should choose them.
           </p>
           <p>
             Whether it is a real estate company, consultancy, travel agency, or another service
