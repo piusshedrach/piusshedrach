@@ -2,7 +2,7 @@
 title: 'Omonx Speech Therapy'
 date:
 featured: true
-featuredOrder: 6
+featuredOrder: 2
 category: 'Speech Therapy'
 services:
   - Responsive Design

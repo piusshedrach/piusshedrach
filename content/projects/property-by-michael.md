@@ -2,7 +2,7 @@
 title: 'Property by Michael'
 date:
 featured: true
-featuredOrder: 2
+featuredOrder: 5
 category: 'Real Estate'
 services:
   - Real Estate
@@ -10,7 +10,7 @@ services:
   - Property Showcase
 external: 'https://propertypbm.vercel.app/'
 github:
-cover:
+cover: ./images/site-pbm.PNG
 ---
 
 A premium real estate website designed to showcase listings while reinforcing trust through

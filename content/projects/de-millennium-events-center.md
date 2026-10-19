@@ -2,7 +2,7 @@
 title: 'De-Millennium Events Center'
 date:
 featured: true
-featuredOrder: 4
+featuredOrder: 6
 category: 'Events & Hospitality'
 services:
   - Event Venue
