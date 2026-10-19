@@ -54,6 +54,8 @@ const StyledProject = styled.li`
     display: grid;
     place-items: center;
     min-height: 220px;
+    aspect-ratio: 16 / 9;
+    max-height: 430px;
     overflow: hidden;
     background:
       linear-gradient(rgba(10, 25, 47, 0.64), rgba(10, 25, 47, 0.92)),
@@ -95,13 +97,7 @@ const StyledProject = styled.li`
     inset: 0;
     width: 100%;
     height: 100%;
-    opacity: 0.46;
-    filter: grayscale(100%) contrast(1.1);
-
-    @media (max-width: 900px) {
-      opacity: 1;
-      filter: none;
-    }
+    object-fit: cover;
   }
 
   .project-content {
@@ -194,18 +190,20 @@ const Featured = ({ projects }) => {
                 {cover && (
                   <img
                     src={cover}
-                    alt=""
+                    alt={`${title} website screenshot`}
                     className="project-image"
-                    width="700"
-                    height="394"
+                    width="880"
+                    height="425"
                     loading="lazy"
                     decoding="async"
                   />
                 )}
-                <div className="project-placeholder">
-                  <span>{category}</span>
-                  <strong>{title}</strong>
-                </div>
+                {!cover && (
+                  <div className="project-placeholder">
+                    <span>{category}</span>
+                    <strong>{title}</strong>
+                  </div>
+                )}
               </div>
 
               <div className="project-content">
