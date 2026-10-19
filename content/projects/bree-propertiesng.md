@@ -10,7 +10,7 @@ services:
   - Lead Generation
 external: 'https://breepropertiesng.vercel.app/'
 github:
-cover:
+cover: ./images/site-bree.PNG
 ---
 
 A premium real estate website designed to establish trust through the founder's story, showcase

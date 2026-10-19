@@ -10,7 +10,7 @@ services:
   - WordPress CMS
 external: 'https://consultamber.com/'
 github:
-cover:
+cover: ./images/site-amber.PNG
 ---
 
 A complete redesign for a consultancy business, replacing an outdated website with a modern

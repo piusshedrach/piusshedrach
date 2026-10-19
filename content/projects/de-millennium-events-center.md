@@ -10,7 +10,7 @@ services:
   - Booking Experience
 external: 'https://demillennium-center.vercel.app/'
 github:
-cover:
+cover: ./images/site-demillenium.PNG
 ---
 
 An elegant event center website designed to showcase the venue's spaces and gallery while making

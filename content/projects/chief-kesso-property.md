@@ -10,7 +10,7 @@ services:
   - Lead Generation
 external: 'https://chief-kesso-properties.vercel.app/'
 github:
-cover:
+cover: ./images/site-chief-kesso.PNG
 ---
 
 A modern real estate website designed to showcase available properties, communicate credibility,
